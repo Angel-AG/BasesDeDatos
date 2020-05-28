@@ -26,9 +26,39 @@
       <div class="tab-content">
         <div class="tab-pane fade show active" id="componentes" role="tabpanel">
           <h2>Componentes electrónicos</h2>
+          <form>
+            <div class="form-row">
+              <div class="form-group col">
+                <input class="form-control mr-sm-2" type="search" id="nombreComp" name="nombreComp" placeholder="Buscar componentes...">
+                <button class="btn btn-outline-primary mt-2 mr-2" type="submit">Buscar</button>
+                <button class="btn btn-outline-info mt-2 mr-2" type="button" data-toggle="collapse" data-target="#opcionesComponentes">Más opciones</button>
+              </div>
+            </div>
+            <div class="collapse" id="opcionesComponentes">
+              <div class="form-row">
+                <div class="form-group col">
+                  <label for="minPrice">Precio Minimo: </label>
+                  <input type="number" class="form-control" id="minPrice" name="minPrice" min="0" disabled>
+                </div>
+                <div class="form-group col">
+                  <label for="minPrice">Precio Máximo: </label>
+                  <input type="number" class="form-control" id="maxPrice" name="maxPrice" max="15000" disabled>
+                </div>
+                <div class="form-group col">
+                  <label for="stock">En stock: </label>
+                  <input type="checkbox" class="form-control" id="stock" name="stock" disabled>
+                </div>
+              </div>
+            </div>
+          </form>
         </div>
         <div class="tab-pane fade" id="proyectos" role="tabpanel">
           <h2>Proyectos</h2>
+          <form class="form-inline">
+            <input class="form-control mr-sm-2" type="search" placeholder="Buscar proyectos...">
+            <button class="btn btn-outline-primary mr-2" type="submit">Buscar</button>
+            <button class="btn btn-outline-info mr-2" type="submit">Búsqueda avanzada</button>
+          </form>
         </div>
       </div>
     </div>

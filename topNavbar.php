@@ -2,12 +2,6 @@
 echo '<div class="mb-1">
     <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-primary">
         <a class="navbar-brand" href="index.php">El Garage de Welsh</a>
-        
-        <form class="form-inline">
-        <input class="form-control mr-sm-2" type="search" placeholder="Buscar...">
-        <button class="btn btn-outline-light mr-2" type="submit">Buscar</button>
-        <button class="btn btn-outline-light mr-2" type="submit">Búsqueda avanzada</button>
-        </form>
 
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
         <span class="navbar-toggler-icon"></span>
