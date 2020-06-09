@@ -1,10 +1,7 @@
 <?php
   session_start();
 
-  if (isset($_SESSION["userID"])){
-    $_SESSION["userID"] = $_SESSION["userID"];
-  }
-  else {
+  if (!isset($_SESSION["userID"])){
     $_SESSION["userID"] = null;
   }
 ?>
