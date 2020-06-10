@@ -46,13 +46,13 @@
     $address = !empty($_POST["address"]) ? test_input($_POST["address"]) : '';
 
     $noPhone = !empty($_POST["phone"]) ? test_input($_POST["phone"]) : '';
-    if (!preg_match("/^[0-9]{3}-[0-9]{3}-[0-9]{4}$/", $noPhone)) {
+    if (!preg_match("/^[0-9]{3}-[0-9]{3}-[0-9]{4}$/", $noPhone) && !empty($noPhone)) {
       $noPhoneErr = "Respetar patrón: 123-456-7890";
       $allOK = false;
     }
 
     $cdCard = !empty($_POST["creditCard"]) ? test_input($_POST["creditCard"]) : '';
-    if (!preg_match("/^[0-9]+$/", $cdCard)) {
+    if (!preg_match("/^[0-9]+$/", $cdCard) && !empty($cdCard)) {
       $cdCardErr= "Solamente números";
       $allOK = false;
     }
@@ -140,7 +140,7 @@
           <div class="form-group col">
             <label for="creditCard">Tarjeta</label>
             <input type="text" class="form-control" id="creditCard" name="creditCard" pattern="[0-9]+" placeholder="Tarjeta">
-            <span class="error"><?php echo $noPhoneErr;?></span>
+            <span class="error"><?php echo $cdCardErr;?></span>
           </div>
         </div>
         <button type="submit" class="btn btn-primary btn-block">Crear cuenta</button>
