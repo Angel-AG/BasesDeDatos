@@ -59,7 +59,7 @@
     ?>
 
     <div class="container">
-    <h2 class="card-title">Modificar datos</h2>
+      <h2 class="card-title">Modificar datos</h2>
       <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
         <div class="form-row">
           <div class="form-group col">

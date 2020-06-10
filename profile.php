@@ -25,10 +25,13 @@
       <h2 class="card-title m-2">Mi Garage</h2>
       <div class="row m-2">
         <div class="col">
-        <a class="btn btn-primary btn-lg btn-block" href="myComponentes.php" role="button">Mis componentes</a>
+        <a class="btn btn-primary btn-lg btn-block" href="myComponents.php" role="button">Componentes favoritos</a>
         </div>
         <div class="col">
-          <a class="btn btn-primary btn-lg btn-block" href="myProject.php" role="button">Mis proyectos</a>
+          <a class="btn btn-primary btn-lg btn-block" href="favProjects.php" role="button">Proyectos favoritos</a>
+        </div>
+        <div class="col">
+          <a class="btn btn-primary btn-lg btn-block" href="myProjects.php" role="button">Mis proyectos</a>
         </div>
       </div>
       <div class="row m-2">
