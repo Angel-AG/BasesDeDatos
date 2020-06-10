@@ -15,19 +15,19 @@
     // SQL HERE - SQL HERE - SQL HERE - SQL HERE - SQL HERE -
     $allOK = true;
 
-    $fname = test_input($_POST["fname"]);
+    $fname = !empty($_POST["fname"]) ? test_input($_POST["fname"]) : '';
     if (!preg_match("/^[a-zA-Z]+$/", $fname)) {
       $fnameErr = "Solo primer nombre";
       $allOK = false;
     }
 
-    $lname = test_input($_POST["lname"]);
+    $lname = !empty($_POST["lname"]) ? test_input($_POST["lname"]) : '';
     if (!preg_match("/^[a-zA-Z]+$/", $lname)) {
       $lnameErr = "Solo apellido";
       $allOK = false;
     }
     
-    $email = test_input($_POST["inputEmail"]);
+    $email = !empty($_POST["inputEmail"]) ? test_input($_POST["inputEmail"]) : '';
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
      $emailErr = "Correo no válido";
     }
@@ -37,21 +37,21 @@
       $emailErr = "Correo ya está en uso";
     }
     
-    $pass = test_input($_POST["inputPassword"]);
+    $pass = !empty($_POST["inputPassword"]) ? test_input($_POST["inputPassword"]) : '';
     if (strlen($pass) < 7) {
       $passErr = "Longitud del password minimo 7";
       $allOK = false;
     }
 
-    $address = test_input($_POST["address"]);
+    $address = !empty($_POST["address"]) ? test_input($_POST["address"]) : '';
 
-    $noPhone = test_input($_POST["phone"]);
+    $noPhone = !empty($_POST["phone"]) ? test_input($_POST["phone"]) : '';
     if (!preg_match("/^[0-9]{3}-[0-9]{3}-[0-9]{4}$/", $noPhone)) {
       $noPhoneErr = "Respetar patrón: 123-456-7890";
       $allOK = false;
     }
 
-    $cdCard = test_input($_POST["creditCard"]);
+    $cdCard = !empty($_POST["creditCard"]) ? test_input($_POST["creditCard"]) : '';
     if (!preg_match("/^[0-9]+$/", $cdCard)) {
       $cdCardErr= "Solamente números";
       $allOK = false;

@@ -1,7 +1,7 @@
 <?php 
   $email = $pass = null;
 
-  if ($_SERVER["REQUEST_METHOD"] == "POST") {
+  if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_POST["inputEmail"]) && !empty($_POST["inputPassword"])) {
     $email = test_input($_POST["inputEmail"]);
     $pass = test_input($_POST["inputPassword"]);
   }
