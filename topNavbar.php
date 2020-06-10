@@ -33,7 +33,7 @@
         if (isset($_SESSION["userID"])) {
           // SQL HERE - SQL HERE - SQL HERE - SQL HERE
           echo '<li class="nav-item active">
-                  <a class="nav-link" href="">Alfredo Welsh</a>
+                  <a class="nav-link" href="profile.php">Alfredo Welsh</a>
                 </li>
                 <li class="nav-item active">
                   <a class="nav-link" href="logout.php">Cerrar Sesión</a>
