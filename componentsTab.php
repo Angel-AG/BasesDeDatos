@@ -36,9 +36,9 @@
   </div>
 </form>
   <?php
-    if ($retrieveComp = $conn->prepare("SELECT comp.Nombre, comp.Descripcion, comp.Precio, count(comp.ID_Componente) AS TotalEstrellas
+    if ($retrieveComp = $conn->prepare("SELECT comp.Nombre, comp.Descripcion, comp.Precio, count(favComp.Componente) AS TotalEstrellas
                                         FROM componentes AS comp
-                                        JOIN componentes_favoritos AS favComp ON favComp.Componente = comp.ID_Componente
+                                        LEFT JOIN componentes_favoritos AS favComp ON favComp.Componente = comp.ID_Componente
                                         GROUP BY comp.Nombre;")) {
       $retrieveComp->execute();
 
