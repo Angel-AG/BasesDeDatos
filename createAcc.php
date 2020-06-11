@@ -12,7 +12,7 @@
     return $data;
   }
 ?>
-
+<?php include 'connectDB.php'?>
 <?php 
   $fname = $lname = $email = $pass = $address = $noPhone = $cdCard = null;
   $fnameErr = $lnameErr = $emailErr = $passErr = $noPhoneErr = $cdCardErr = null;

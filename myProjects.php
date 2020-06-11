@@ -12,6 +12,7 @@
     return $data;
   }
 ?>
+<?php include 'connectDB.php'?>
 <!doctype html>
 <html lang="en">
   <head>
