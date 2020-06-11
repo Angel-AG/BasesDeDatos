@@ -1,5 +1,5 @@
 <?php 
-  $email = $pass = null;
+  $email = $pass = $err = null;
 
   if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_POST["inputEmail"]) && !empty($_POST["inputPassword"])) {
     $email = test_input($_POST["inputEmail"]);
@@ -7,8 +7,25 @@
   }
 
   if (isset($email) && isset($pass)) {
-    // SQL HERE - SQL HERE - SQL HERE - SQL HERE - SQL HERE -
-    $_SESSION["userID"] = 1;
+    if ($checkEmailPass = $conn->prepare("SELECT ID_Usuario, Nombre, Apellido, Es_Administrador FROM usuario WHERE E_mail = ? AND Contrasena = ?;")) {
+      $checkEmailPass->bind_param("ss", $email, $pass);
+      $checkEmailPass->execute();
+
+      $result = $checkEmailPass->get_result();
+      if ($result->num_rows == 1) {
+        $row = $result->fetch_assoc();
+        $_SESSION["userID"] = $row["ID_Usuario"];
+        $_SESSION["fname"] = $row["Nombre"];
+        $_SESSION["lname"] = $row["Apellido"];
+        $_SESSION["isAdmin"] = $row["Es_Administrador"];
+      }
+      else {
+        $err = "Email/Contraseña no coinciden";
+      }
+    }
+    else {
+      $err = "Dificultades técnicas, intente después";
+    }
   }
 ?>
 
@@ -24,9 +41,8 @@
         <ul class="navbar-nav">
       <?php 
         if (isset($_SESSION["userID"])) {
-          // SQL HERE - SQL HERE - SQL HERE - SQL HERE
           echo '<li class="nav-item active">
-                  <a class="nav-link" href="profile.php">Alfredo Welsh</a>
+                  <a class="nav-link" href="profile.php">'.$_SESSION["fname"]. ' ' .$_SESSION["lname"].'</a>
                 </li>
                 <li class="nav-item active">
                   <a class="nav-link" href="logout.php">Cerrar Sesión</a>
@@ -67,6 +83,7 @@
             <input type="password" class="form-control" id="inputPassword" placeholder="Contraseña" name="inputPassword" required>
           </div>
           <button type="submit" class="btn btn-primary btn-block">Iniciar sesión</button>
+          <span class="error"><?php echo $err?></span>
         </form>
       </div>
     </div>
