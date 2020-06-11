@@ -4,6 +4,13 @@
   if (!isset($_SESSION["userID"])){
     header("Location: index.php");
   }
+
+  function test_input($data) {
+    $data = trim($data);
+    $data = stripslashes($data);
+    $data = htmlspecialchars($data);
+    return $data;
+  }
 ?>
 <!doctype html>
 <html lang="en">

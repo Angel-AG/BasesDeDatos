@@ -4,6 +4,13 @@
   if (!isset($_SESSION["userID"])){
     $_SESSION["userID"] = null;
   }
+
+  function test_input($data) {
+    $data = trim($data);
+    $data = stripslashes($data);
+    $data = htmlspecialchars($data);
+    return $data;
+  }
 ?>
 <!doctype html>
 <html lang="en">

@@ -10,13 +10,6 @@
     // SQL HERE - SQL HERE - SQL HERE - SQL HERE - SQL HERE -
     $_SESSION["userID"] = 1;
   }
-
-  function test_input($data) {
-    $data = trim($data);
-    $data = stripslashes($data);
-    $data = htmlspecialchars($data);
-    return $data;
-  }
 ?>
 
 <div class="mb-1">
