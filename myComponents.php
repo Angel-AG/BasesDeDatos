@@ -13,6 +13,26 @@
   }
 ?>
 <?php include 'connectDB.php'?>
+<?php 
+  $componente = null;
+
+  if ($_SERVER["REQUEST_METHOD"] == "GET" && !empty($_GET["byeComp"])) {
+    $componente = test_input($_GET["byeComp"]);
+  }
+
+  if (isset($componente)) {
+    if ($delComp = $conn->prepare("DELETE FROM componentes_favoritos
+                                  WHERE Componente = ? AND Usuario = ?;")) {
+      $delComp->bind_param("ii", $componente, $_SESSION["userID"]);
+      $delComp->execute();
+
+      header("Location: ".$_SERVER["PHP_SELF"]."");
+    }
+    else {
+      $err = "Dificultades técnicas, intente después";
+    }
+  }
+?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -28,33 +48,41 @@
   <body>
 
     <?php include 'topNavbar.php';?>
-    <div class="modal fade" id="addComp" tabindex="-1" role="dialog">
-      <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Agregar componente</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
-              <div class="form-group">
-                <!-- SQL HERE - SQL HERE - SQL HERE - SQL HERE -->
-                <label for="inputEmail">Correo electrónico</label>
-                <input type="email" class="form-control" id="inputEmail" placeholder="Correo electrónico" name="inputEmail" required>
-              </div>
-              <button type="submit" class="btn btn-primary btn-block">Agregar</button>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
     
     <div class="container">
       <h2 class="card-title">Componentes favoritos</h2>
-      <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#addComp">Agregar componente</button>
-      <!-- SQL HERE - SQL HERE - SQL HERE - SQL HERE -->
+      <?php
+        if ($retrieveComp = $conn->prepare("SELECT comp.ID_Componente, comp.Nombre, comp.Precio
+                                            FROM componentes_favoritos AS favComp
+                                            JOIN componentes AS comp ON comp.ID_Componente = favComp.Componente
+                                            WHERE favComp.Usuario = ?;")) {
+          $retrieveComp->bind_param("i", $_SESSION["userID"]);
+          $retrieveComp->execute();
+
+          $breakRow = 0;
+          $result = $retrieveComp->get_result();
+          while ($row = $result->fetch_assoc()) {
+            if ($breakRow == 0) echo '<div class="card-deck">';
+
+            echo '<div class="card mb-3"><div class="card-body">';
+            echo '<h4 class="card-title">' .$row["Nombre"]. '</h4>';
+            echo '<hr class="my-3">';
+            echo '<div class="row">';
+            echo '<div class="col-3"><h5 style="color: green;">$' .$row["Precio"]. '</h5></div>';
+            echo '<div class="col-3"><form action="' .$_SERVER["PHP_SELF"]. '" method="get"><button name="byeComp" value="'.$row["ID_Componente"].'" class="btn btn-danger btn-block btn-block" type="submit">Quitar</button></form></div>';
+            echo '<div class="col-6"><a class="btn btn-info btn-block" href="#" role="button">Ver en tienda</a></div>';
+            echo '</div>';
+            echo '</div></div>';
+            
+            $breakRow = ($breakRow + 1);
+            if ($breakRow == 2) echo '</div>';
+            $breakRow = $breakRow % 2;
+          }
+        }
+        else {
+          $err = "Dificultades técnicas, intente después";
+        } 
+      ?>
     </div>
 
     <!-- Optional JavaScript -->
