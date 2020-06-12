@@ -13,6 +13,26 @@
   }
 ?>
 <?php include 'connectDB.php'?>
+<?php 
+  $proyecto = null;
+
+  if ($_SERVER["REQUEST_METHOD"] == "GET" && !empty($_GET["byeProy"])) {
+    $proyecto = test_input($_GET["byeProy"]);
+  }
+
+  if (isset($proyecto)) {
+    if ($delComp = $conn->prepare("DELETE FROM proyectos_favoritos
+                                  WHERE Proyecto = ? AND Usuario = ?;")) {
+      $delComp->bind_param("ii", $proyecto, $_SESSION["userID"]);
+      $delComp->execute();
+
+      header("Location: ".$_SERVER["PHP_SELF"]."");
+    }
+    else {
+      $err = "Dificultades técnicas, intente después";
+    }
+  }
+?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -22,6 +42,11 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <style>
+      .Principiante {color: green;}
+      .Intermedio {color: DarkGoldenRod;}
+      .Avanzado {color: red;}
+    </style>
 
     <title>El Garage de Welsh</title>
   </head>
@@ -31,7 +56,38 @@
     
     <div class="container">
       <h2 class="card-title">Proyectos favoritos</h2>
-      <!-- SQL HERE - SQL HERE - SQL HERE - SQL HERE -->
+      <?php
+        if ($retrieveProy = $conn->prepare("SELECT proy.ID_Proyecto, proy.Nombre, proy.Dificultad
+                                            FROM proyectos_favoritos AS favProy
+                                            JOIN proyecto AS proy ON proy.ID_Proyecto = favProy.Proyecto
+                                            WHERE favProy.Usuario = ?;")) {
+          $retrieveProy->bind_param("i", $_SESSION["userID"]);
+          $retrieveProy->execute();
+
+          $breakRow = 0;
+          $result = $retrieveProy->get_result();
+          while ($row = $result->fetch_assoc()) {
+            if ($breakRow == 0) echo '<div class="card-deck">';
+
+            echo '<div class="card mb-3"><div class="card-body">';
+            echo '<h4 class="card-title">' .$row["Nombre"]. '</h4>';
+            echo '<hr class="my-3">';
+            echo '<div class="row">';
+            echo '<div class="col-3"><h5 class="'.$row["Dificultad"].'">' .$row["Dificultad"]. '</h5></div>';
+            echo '<div class="col-3"><form action="' .$_SERVER["PHP_SELF"]. '" method="get"><button name="byeProy" value="'.$row["ID_Proyecto"].'" class="btn btn-danger btn-block btn-block" type="submit">Quitar</button></form></div>';
+            echo '<div class="col-6"><a class="btn btn-info btn-block" href="#" role="button">Ver detalles</a></div>';
+            echo '</div>';
+            echo '</div></div>';
+            
+            $breakRow = ($breakRow + 1);
+            if ($breakRow == 2) echo '</div>';
+            $breakRow = $breakRow % 2;
+          }
+        }
+        else {
+          $err = "Dificultades técnicas, intente después";
+        } 
+      ?>
     </div>
 
     <!-- Optional JavaScript -->
