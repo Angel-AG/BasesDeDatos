@@ -197,17 +197,6 @@
                         <button type="submit" class="btn btn-primary btn-info btn-block">Calificar</button>
                       </div></div></form></div>';
               echo '</div></div></div>';
-              // if ($optionsComp = $conn->prepare("SELECT ID_Componente, Nombre
-              //                                   FROM componentes;")) {
-              //   $optionsComp->execute();
-
-              //   $result = $optionsComp->get_result();
-              //   while ($row = $result->fetch_assoc()) {
-              //     echo '<option value="'.$row["ID_Componente"].'">'.$row["Nombre"].'</option>';
-              //   }
-              // }
-//               INSERT INTO proyectos_favoritos (Proyecto, Usuario)
-// VALUES (3, 55);
             }
           }
         }

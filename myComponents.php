@@ -70,7 +70,7 @@
             echo '<div class="row">';
             echo '<div class="col-3"><h5 style="color: green;">$' .$row["Precio"]. '</h5></div>';
             echo '<div class="col-3"><form action="' .$_SERVER["PHP_SELF"]. '" method="get"><button name="byeComp" value="'.$row["ID_Componente"].'" class="btn btn-danger btn-block btn-block" type="submit">Quitar</button></form></div>';
-            echo '<div class="col-6"><a class="btn btn-info btn-block" href="#" role="button">Ver en tienda</a></div>';
+            echo '<div class="col-6"><a class="btn btn-info btn-block" href="component.php?comp='.$row["ID_Componente"].'" role="button">Ver en tienda</a></div>';
             echo '</div>';
             echo '</div></div>';
             

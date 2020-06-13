@@ -36,7 +36,7 @@
   </div>
 </form>
 <?php
-  if ($retrieveComp = $conn->prepare("SELECT comp.Nombre, comp.Descripcion, comp.Precio, count(favComp.Componente) AS TotalEstrellas
+  if ($retrieveComp = $conn->prepare("SELECT comp.ID_Componente, comp.Nombre, comp.Descripcion, comp.Precio, count(favComp.Componente) AS TotalEstrellas
                                       FROM componentes AS comp
                                       LEFT JOIN componentes_favoritos AS favComp ON favComp.Componente = comp.ID_Componente
                                       GROUP BY comp.ID_Componente;")) {
@@ -54,7 +54,7 @@
       echo '<div class="row">';
       echo '<div class="col-6"><h5 style="color: GoldenRod;">Estrellas: ' .$row["TotalEstrellas"]. '</h5></div>';
       echo '<div class="col-3"><h5 style="color: green;">$' .$row["Precio"]. '</h5></div>';
-      echo '<div class="col-3"><a class="btn btn-info btn-block" href="#" role="button">Detalles</a></div>';
+      echo '<div class="col-3"><a class="btn btn-info btn-block" href="component.php?comp='.$row["ID_Componente"].'" role="button">Detalles</a></div>';
       echo '</div>';
       echo '</div></div>';
       

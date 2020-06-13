@@ -81,7 +81,7 @@
   }
 
   if ($allOK) {
-    if ($nextIDUser = $conn->prepare("SELECT max(ID_Usuario) AS ID FROM usuario;")) {
+    if ($nextIDUser = $conn->prepare("SELECT IFNULL(max(ID_Usuario), 1) AS ID FROM usuario;")) {
         $nextIDUser->execute();
   
         $ID = 0;
