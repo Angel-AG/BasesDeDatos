@@ -30,14 +30,28 @@
   <body>
 
     <?php include 'topNavbar.php';?>
-    <?php 
-      // SQL HERE - SQL HERE - SQL HERE - SQL HERE - SQL HERE - SQL HERE -
-      $fname = $lname = $address = $noPhone = $cdCard = $exito = "";
+    <?php
+      $address = $noPhone = $cdCard = $exito = "";
       $noPhoneErr = $cdCardErr = null;
       $allOK = false;
+    
+      if ($recoverData = $conn->prepare("SELECT Direccion, No_Telefono, Tarjeta
+                                          FROM Usuario
+                                          WHERE ID_Usuario = ?;")) {
+        $recoverData->bind_param("i", $_SESSION["userID"]);
+        $recoverData->execute();
+  
+        $result = $recoverData->get_result();
+        $row = $result->fetch_assoc();
+        $address = $row["Direccion"];
+        $noPhone = $row["No_Telefono"];
+        $cdCard = $row["Tarjeta"];
+      }
+      else {
+        $err = "Dificultades técnicas, intente después";
+      }
 
       if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        // SQL HERE - SQL HERE - SQL HERE - SQL HERE - SQL HERE -
         $allOK = true;
 
         $address = !empty($_POST["address"]) ? test_input($_POST["address"]) : '';
@@ -59,10 +73,17 @@
       }
 
       if ($allOK) {
-        // SQL HERE - SQL HERE - SQL HERE - SQL HERE - SQL HERE -
-        $_SESSION["userID"] = 1;
+        if ($recoverData = $conn->prepare("UPDATE Usuario
+                                            SET Direccion=?, No_Telefono=?, Tarjeta=?
+                                            WHERE ID_Usuario=?;")) {
+          $recoverData->bind_param("sssi", $address, $noPhone, $cdCard, $_SESSION["userID"]);
+          $recoverData->execute();
 
-        $exito = "exito";
+          header("Location: index.php");
+        }
+        else {
+          $err = "Dificultades técnicas, intente después";
+        }
       }
     ?>
 
@@ -72,11 +93,11 @@
         <div class="form-row">
           <div class="form-group col">
             <label for="fname">Nombre</label>
-            <input type="text" class="form-control" id="fname" placeholder="<?php echo $fname?>" disabled>
+            <input type="text" class="form-control" id="fname" placeholder="<?php echo $_SESSION["fname"]?>" disabled>
           </div>
           <div class="form-group col">
             <label for="lname">Apellido</label>
-            <input type="text" class="form-control" id="lname" placeholder="<?php echo $lname?>" disabled>
+            <input type="text" class="form-control" id="lname" placeholder="<?php echo $_SESSION["lname"]?>" disabled>
           </div>
         </div>
         <div class="form-row">

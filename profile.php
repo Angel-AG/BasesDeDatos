@@ -52,7 +52,7 @@
       </div>
       <?php
         // IF ADMIN - IF ADMIN - IF ADMIN - IF ADMIN - IF ADMIN 
-        if (true) {
+        if ($_SESSION["isAdmin"]) {
           echo '<div class="row m-2">
                   <div class="col">
                     <a class="btn btn-info btn-lg btn-block" href="controlPanel.php" role="button">Panel de Control</a>
