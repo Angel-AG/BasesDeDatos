@@ -69,6 +69,7 @@
         if ($breakRow == 3) echo '</div>';
         $breakRow = $breakRow % 3;
       }
+      if ($breakRow != 0) echo '</div>';
     }
     else {
       $err = "Dificultades técnicas, intente después";

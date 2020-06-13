@@ -83,6 +83,7 @@
             if ($breakRow == 2) echo '</div>';
             $breakRow = $breakRow % 2;
           }
+          if ($breakRow != 0) echo '</div>';
         }
         else {
           $err = "Dificultades técnicas, intente después";

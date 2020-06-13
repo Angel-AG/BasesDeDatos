@@ -37,11 +37,25 @@
     $email = !empty($_POST["inputEmail"]) ? test_input($_POST["inputEmail"]) : '';
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
      $emailErr = "Correo no válido";
+     $allOK = false;
     }
-    else if (false) {
-      // SQL HERE - SQL HERE - SQL HERE - Checar si ya existe
-
-      $emailErr = "Correo ya está en uso";
+    else {
+      if ($checkEmail = $conn->prepare("SELECT ID_Usuario
+                                        FROM Usuario
+                                        WHERE E_mail = ?;")) {
+        $checkEmail->bind_param("s", $email);
+        $checkEmail->execute();
+  
+        $result = $checkEmail->get_result();
+        if ($result->num_rows != 0) {
+          $emailErr = "Correo ya está en uso";
+          $allOK = false;
+        }
+      }
+      else {
+        $err = "Dificultades técnicas, intente después";
+        $allOK = false;
+      }
     }
     
     $pass = !empty($_POST["inputPassword"]) ? test_input($_POST["inputPassword"]) : '';
@@ -67,10 +81,46 @@
   }
 
   if ($allOK) {
-    // SQL HERE - SQL HERE - SQL HERE - SQL HERE - SQL HERE -
-    $_SESSION["userID"] = 1;
+    if ($nextIDUser = $conn->prepare("SELECT max(ID_Usuario) AS ID FROM usuario;")) {
+        $nextIDUser->execute();
+  
+        $ID = 0;
+        $result = $nextIDUser->get_result();
+        if ($result->num_rows != 0) {
+          $row = $result->fetch_assoc();
+          $ID = $row["ID"] + 1;
 
-    header("Location: index.php");
+          if ($addUser = $conn->prepare("INSERT INTO usuario (ID_Usuario, Nombre, Apellido, E_mail, No_Telefono, Direccion, Tarjeta, Contrasena, Fecha_de_creacion, Es_Administrador)
+                                          VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW(), 0);")) {
+            $addUser->bind_param("isssssss", $ID, $fname, $lname, $email, $noPhone, $address, $cdCard, $pass);
+            $addUser->execute();
+
+            $_SESSION["userID"] = $ID;
+            $_SESSION["fname"] = $fname;
+            $_SESSION["lname"] = $lname;
+            $_SESSION["isAdmin"] = 0;
+
+            header("Location: index.php");
+          }
+          else {
+            $err = "Dificultades técnicas, intente después";
+            $allOK = false;
+          }
+
+        }
+        else {
+          $allOK = false;
+        }
+      }
+      else {
+        $err = "Dificultades técnicas, intente después";
+        $allOK = false;
+      }
+
+    if (!$allOK) {
+
+      header("Location: createAcc.php");
+    }
   }
 ?>
 
