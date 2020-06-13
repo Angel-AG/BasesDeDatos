@@ -41,7 +41,7 @@
   </div>
 </form>
 <?php
-    if ($retrieveComp = $conn->prepare("SELECT proy.Nombre, proy.Dificultad, count(favProy.Proyecto) AS TotalEstrellas, IFNULL(AVG(caliProy.Calificacion), 0) AS sumaCali
+    if ($retrieveComp = $conn->prepare("SELECT proy.ID_Proyecto, proy.Nombre, proy.Dificultad, count(favProy.Proyecto) AS TotalEstrellas, IFNULL(AVG(caliProy.Calificacion), 0) AS sumaCali
                                         FROM proyecto AS proy
                                         LEFT JOIN proyectos_favoritos AS favProy ON favProy.Proyecto = proy.ID_Proyecto
                                         LEFT JOIN calificaciones_proyectos AS caliProy ON caliProy.ID_Proyecto = proy.ID_Proyecto
@@ -61,7 +61,7 @@
         echo '<div class="col-4"><h5 style="color: GoldenRod;">Estrellas: ' .$row["TotalEstrellas"]. '</h5></div>';
         if ($row["sumaCali"]) echo '<div class="col-5"><h5>Sin calificación</h5></div>';
         else echo '<div class="col-5"><h5>Calificación general: $' .$row["sumaCali"]. '</h5></div>';
-        echo '<div class="col-3"><a class="btn btn-info btn-block" href="#" role="button">Detalles</a></div>';
+        echo '<div class="col-3"><a class="btn btn-info btn-block" href="project.php?proy='.$row["ID_Proyecto"].'" role="button">Detalles</a></div>';
         echo '</div>';
         echo '</div></div>';
         

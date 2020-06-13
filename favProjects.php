@@ -75,7 +75,7 @@
             echo '<div class="row">';
             echo '<div class="col-3"><h5 class="'.$row["Dificultad"].'">' .$row["Dificultad"]. '</h5></div>';
             echo '<div class="col-3"><form action="' .$_SERVER["PHP_SELF"]. '" method="get"><button name="byeProy" value="'.$row["ID_Proyecto"].'" class="btn btn-danger btn-block btn-block" type="submit">Quitar</button></form></div>';
-            echo '<div class="col-6"><a class="btn btn-info btn-block" href="#" role="button">Ver detalles</a></div>';
+            echo '<div class="col-6"><a class="btn btn-info btn-block" href="project.php?proy=' .$row["ID_Proyecto"]. '" role="button">Ver detalles</a></div>';
             echo '</div>';
             echo '</div></div>';
             

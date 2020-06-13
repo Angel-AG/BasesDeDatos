@@ -15,7 +15,7 @@
 <?php include 'connectDB.php'?>
 <?php 
   $fname = $lname = $email = $pass = $address = $noPhone = $cdCard = null;
-  $fnameErr = $lnameErr = $emailErr = $passErr = $noPhoneErr = $cdCardErr = null;
+  $fnameErr = $lnameErr = $emailErr = $passErr = $noPhoneErr = $cdCardErr = $err = null;
   $allOK = false;
 
   if ($_SERVER["REQUEST_METHOD"] == "POST") {

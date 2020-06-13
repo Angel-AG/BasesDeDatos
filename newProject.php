@@ -56,8 +56,8 @@
           $addProy->bind_param("isiss", $ID, $nameProy, $_SESSION["userID"], $dif, $descrip);
           $addProy->execute();
 
-          header("Location: myProjects.php");
-          // header("Location: proyecto.php?proy=" .$ID."");
+          // header("Location: myProjects.php");
+          header("Location: proyecto.php?proy=" .$ID."");
         }
         else {
           $err = "Dificultades técnicas, intente después";
