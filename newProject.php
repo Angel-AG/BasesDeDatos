@@ -13,6 +13,72 @@
   }
 ?>
 <?php include 'connectDB.php'?>
+<?php 
+  $ID = $nameProy = $dif = $descrip = null;
+  $nameProyErr = $descripErr = null;
+  $allOK = false;
+
+  if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_POST["dificultad"])) {
+    $allOK = true;
+
+    $nameProy = !empty($_POST["nameProy"]) ? test_input($_POST["nameProy"]) : '';
+    if (empty($_POST["nameProy"])) {
+      $nameProyErr = "Ingresa nombre";
+      $allOK = false;
+    }
+ 
+    if ($_POST["dificultad"] == "Principiante" || $_POST["dificultad"] == "Intermedio" || $_POST["dificultad"] == "Avanzado") {
+      $dif = $_POST["dificultad"];
+    }
+    else {
+      $allOK = false;
+    }
+
+    $descrip = !empty($_POST["descripcion"]) ? test_input($_POST["descripcion"]) : '';
+    if (empty($_POST["descripcion"])) {
+      $descripErr = "Ingresa descripcion";
+      $allOK = false;
+    }
+  }
+
+  if ($allOK) {
+    if ($nextIDProy = $conn->prepare("SELECT max(ID_Proyecto) AS ID FROM proyecto;")) {
+      $nextIDProy->execute();
+
+      $ID = 0;
+      $result = $nextIDProy->get_result();
+      if ($result->num_rows != 0) {
+        $row = $result->fetch_assoc();
+        $ID = $row["ID"] + 1;
+
+        if ($addProy = $conn->prepare("INSERT INTO proyecto (ID_Proyecto, Nombre, Autor, Fecha_de_creacion, Dificultad, Descripcion)
+                                        VALUES (?, ?, ?, NOW(), ?, ?);")) {
+          $addProy->bind_param("isiss", $ID, $nameProy, $_SESSION["userID"], $dif, $descrip);
+          $addProy->execute();
+
+          header("Location: myProjects.php");
+          // header("Location: proyecto.php?proy=" .$ID."");
+        }
+        else {
+          $err = "Dificultades técnicas, intente después";
+          $allOK = false;
+        }
+
+      }
+      else {
+        $allOK = false;
+      }
+    }
+    else {
+      $err = "Dificultades técnicas, intente después";
+      $allOK = false;
+    }
+
+    if (!$allOK) {
+      // header("Location: newProject.php");
+    }
+  }
+?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -28,10 +94,35 @@
   <body>
 
     <?php include 'topNavbar.php';?>
-    
+
     <div class="container">
       <h2 class="card-title">Nuevo proyecto</h2>
-      <!-- SQL HERE - SQL HERE - SQL HERE - SQL HERE -->
+      <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
+        <div class="form-row">
+          <div class="form-group col">
+            <label for="nameProy">Nombre</label>
+            <input type="text" class="form-control" id="nameProy" name="nameProy" placeholder="Nombre de proyecto" required>
+            <span class="error"><?php echo $nameProyErr;?></span>
+          </div>
+          <div class="form-group col">
+            <label for="dificultad">Dificultad</label>
+            <select class="form-control" id="dificultad" name="dificultad" required>
+              <option value="Principiante">Principiante</option>
+              <option value="Intermedio">Intermedio</option>
+              <option value="Avanzado">Avanzado</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col">
+            <label for="descripcion">Descripcion</label>
+            <textarea class="form-control" id="descripcion" rows="3" name="descripcion" placeholder="Aquí tu descripcion" max="254" required></textarea>
+          </div>
+          <span class="error"><?php echo $descripErr;?></span>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Crear nuevo proyecto</button>
+        <span class="error"><?php echo $err?></span>
+      </form>
     </div>
 
     <!-- Optional JavaScript -->

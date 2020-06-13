@@ -194,6 +194,7 @@
           </div>
         </div>
         <button type="submit" class="btn btn-primary btn-block">Crear cuenta</button>
+        <span class="error"><?php echo $err?></span>
       </form>
     </div>
 
