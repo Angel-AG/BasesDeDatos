@@ -57,7 +57,7 @@
           $addProy->execute();
 
           // header("Location: myProjects.php");
-          header("Location: proyecto.php?proy=" .$ID."");
+          header("Location: project.php?proy=" .$ID."");
         }
         else {
           $err = "Dificultades técnicas, intente después";
